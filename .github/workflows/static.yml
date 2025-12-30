@@ -1,43 +1,32 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+<script>
+    // 1. Define your initial image and daily variations
+    // Place "bee_tuxedo.jpg" in the same folder as this index.html file
+    const dailyImages = [
+        "bee_tuxedo.jpg", // Day 0 (Your initial outfit)
+        "placehold.co",
+        "placehold.co",
+        "placehold.co",
+        "placehold.co"
+    ];
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+    const outfits = ["a Sharp Tuxedo", "a Hawaiian Shirt", "a Space Suit", "a Cowboy Hat", "a Wizard Robe"];
+    const scenes = ["a Neon Jazz Club", "a Tropical Beach", "Outer Space", "the Wild West", "a Magical Forest"];
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    // 2. Calculate the "Day of the Year" to cycle the bee
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 0);
+    const diff = now - start;
+    const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+    // 3. Pick the content based on the remainder (%)
+    const index = dayOfYear % dailyImages.length;
+    
+    const currentImage = dailyImages[index];
+    const currentOutfit = outfits[index];
+    const currentScene = scenes[index];
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
-jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    // 4. Update the page
+    document.getElementById('bee-image').src = currentImage;
+    document.getElementById('outfit').innerText = currentOutfit;
+    document.getElementById('scene').innerText = currentScene;
+</script>
